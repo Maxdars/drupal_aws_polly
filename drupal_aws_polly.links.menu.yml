@@ -1,0 +1,5 @@
+drupal_aws_polly.settings:
+  title: 'AWS Polly Settings'
+  parent: system.admin_config_services
+  description: 'AWS Polly Settings'
+  route_name: drupal_aws_polly.settings

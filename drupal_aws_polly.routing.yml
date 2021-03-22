@@ -1,0 +1,7 @@
+drupal_aws_polly.settings:
+  path: '/admin/config/development/aws_polly/settings'
+  defaults:
+    _form: '\Drupal\drupal_aws_polly\Form\AwsPollySettingsForm'
+    _title: 'AWS Polly Settings'
+  requirements:
+    _role: 'administrator'
