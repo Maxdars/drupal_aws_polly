@@ -1,0 +1,7 @@
+name: 'Amazon Polly'
+description: 'AWS Polly integration'
+type: module
+core_version_requirement: '^8 || ^9'
+core: 8.x
+configure: drupal_aws_polly.settings
+

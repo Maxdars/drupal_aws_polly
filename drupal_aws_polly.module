@@ -1,0 +1,6 @@
+<?php
+
+/**
+ * @file
+ * Primary hooks for drupal_aws_polly module.
+ */
