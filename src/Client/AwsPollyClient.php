@@ -17,6 +17,20 @@ class AwsPollyClient {
   protected $client;
 
   /**
+   * The returned audio stream.
+   *
+   * @var mixed
+   */
+  protected $audioStreams = [];
+
+  /**
+   * The audio generated file.
+   *
+   * @var int
+   */
+  protected $fileIds = [];
+
+  /**
    * AwsPollyClient constructor.
    *
    * @param $api_keys
@@ -36,6 +50,42 @@ class AwsPollyClient {
   }
 
   /**
+   * Adds a new audio stream to the audioStreams array.
+   *
+   * @param $audioStream
+   *   New audio stream.
+   */
+  private function addAudioStream($audioStream) {
+    array_push($this->audioStreams, $audioStream);
+  }
+
+  /**
+   * Returns the audioStreams array..
+   */
+  public function getAudioStreams(): array
+  {
+    return $this->audioStreams;
+  }
+
+  /**
+   * Adds a new file id to the fileIds array.
+   *
+   * @param $fid
+   *   New file id.
+   */
+  private function addFileId($fid) {
+    array_push($this->fileIds, $fid);
+  }
+
+  /**
+   * Returns the audioStreams array..
+   */
+  public function getFileIds(): array
+  {
+    return $this->fileIds;
+  }
+
+  /**
    * Call aws polly service and return an audio stream.
    *
    * @param array $body
@@ -46,7 +96,9 @@ class AwsPollyClient {
    */
   public function synthesizeSpeech($body = []) {
     $result = $this->client->synthesizeSpeech($body);
-    return $result->get('AudioStream')->getContents();
+    $this->addAudioStream($result->get('AudioStream')->getContents());
+
+    return $this;
   }
 
   /**
@@ -79,6 +131,9 @@ class AwsPollyClient {
     ])->save();
 
     file_put_contents($file->getFileUri(), $audiosStream);
+    $this->addFileId($file->id());
+
+    return $this;
   }
 
 }

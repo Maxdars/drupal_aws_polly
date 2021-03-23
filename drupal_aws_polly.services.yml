@@ -1,0 +1,4 @@
+services:
+  drupal_aws_polly.manager:
+    class: Drupal\drupal_aws_polly\Services\AwsPollyService
+    arguments: ['@config.factory']
