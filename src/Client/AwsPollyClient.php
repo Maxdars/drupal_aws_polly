@@ -122,9 +122,10 @@ class AwsPollyClient {
     $folder = date('Y') . "-" . date('m') . "-" . date('d');
     $path = 'aws_polly/' . $folder . "/aws_polly_" . time() . "." . $format;
     $uri = ($uri_schema == "public") ? ("public://" . $path) : ("private://" . $path);
+    $dir = ($uri_schema == "public") ? ("public://aws_polly/" . $folder) : ("private://aws_polly/" . $folder);
 
-    if (!file_exists($uri)) {
-      mkdir($uri, 0770, TRUE);
+    if (!file_exists($dir)) {
+      mkdir($dir, 0770, TRUE);
     }
 
     /** @var \Drupal\file\Entity\File $file */
@@ -135,7 +136,8 @@ class AwsPollyClient {
       'status' => 1,
     ]);
     $file->save();
-    file_put_contents($uri, $this->getAudioStream());
+
+    file_put_contents($file->getFileUri(), $this->getAudioStream());
     $this->setFileId($file->id());
 
     return $this;
