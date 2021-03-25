@@ -90,6 +90,7 @@ class AwsPollyClient {
    *
    * @param array $body
    *   the request body.
+   *   https://docs.aws.amazon.com/polly/latest/dg/API_SynthesizeSpeech.html
    *
    * @return \Drupal\drupal_aws_polly\Client\AwsPollyClient
    *   The audio stream.
