@@ -18,7 +18,7 @@ class AwsPollyService {
   public $config;
 
   /**
-   * Constructs a new CreditRequestService.
+   * Constructs a new AwsPollyService.
    *
    * @param \Drupal\Core\Config\ConfigFactoryInterface $config_factory
    *   The config factory.

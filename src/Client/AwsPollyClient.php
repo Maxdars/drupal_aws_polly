@@ -21,14 +21,14 @@ class AwsPollyClient {
    *
    * @var mixed
    */
-  protected $audioStreams = [];
+  protected $audioStream;
 
   /**
    * The audio generated file.
    *
    * @var int
    */
-  protected $fileIds = [];
+  protected $fileId;
 
   /**
    * AwsPollyClient constructor.
@@ -50,39 +50,39 @@ class AwsPollyClient {
   }
 
   /**
-   * Adds a new audio stream to the audioStreams array.
+   * Set the audio stream value.
    *
    * @param $audioStream
    *   New audio stream.
    */
-  private function addAudioStream($audioStream) {
-    array_push($this->audioStreams, $audioStream);
+  private function setAudioStream($audioStream) {
+    $this->audioStream = $audioStream;
   }
 
   /**
    * Returns the audioStreams array..
    */
-  public function getAudioStreams(): array
+  public function getAudioStream()
   {
-    return $this->audioStreams;
+    return $this->audioStream;
   }
 
   /**
-   * Adds a new file id to the fileIds array.
+   * Set the file id value.
    *
    * @param $fid
    *   New file id.
    */
-  private function addFileId($fid) {
-    array_push($this->fileIds, $fid);
+  private function setFileId($fid) {
+    $this->fileId = $fid;
   }
 
   /**
    * Returns the audioStreams array..
    */
-  public function getFileIds(): array
+  public function getFileId()
   {
-    return $this->fileIds;
+    return $this->fileId;
   }
 
   /**
@@ -91,12 +91,17 @@ class AwsPollyClient {
    * @param array $body
    *   the request body.
    *
-   * @return mixed
+   * @return \Drupal\drupal_aws_polly\Client\AwsPollyClient
    *   The audio stream.
    */
-  public function synthesizeSpeech($body = []) {
-    $result = $this->client->synthesizeSpeech($body);
-    $this->addAudioStream($result->get('AudioStream')->getContents());
+  public function synthesizeSpeech($body = []): AwsPollyClient {
+    try {
+      $result = $this->client->synthesizeSpeech($body);
+      $this->setAudioStream($result->get('AudioStream')->getContents());
+    }
+    catch (\Exception $e) {
+      \Drupal::messenger()->addError('Something went wrong.');
+    }
 
     return $this;
   }
@@ -113,7 +118,7 @@ class AwsPollyClient {
    *
    * @throws \Drupal\Core\Entity\EntityStorageException
    */
-  public function generateAudioFile($format, $audiosStream, $uri_schema = "public") {
+  public function generateAudioFile($format, $uri_schema = "public"): AwsPollyClient {
     $folder = date('Y') . "-" . date('m') . "-" . date('d');
     $path = 'aws_polly/' . $folder . "/aws_polly_" . time() . "." . $format;
     $uri = ($uri_schema == "public") ? ("public://" . $path) : ("private://" . $path);
@@ -128,10 +133,10 @@ class AwsPollyClient {
       'filename' => basename($path),
       'uri' => $uri,
       'status' => 1,
-    ])->save();
-
-    file_put_contents($file->getFileUri(), $audiosStream);
-    $this->addFileId($file->id());
+    ]);
+    $file->save();
+    file_put_contents($uri, $this->getAudioStream());
+    $this->setFileId($file->id());
 
     return $this;
   }

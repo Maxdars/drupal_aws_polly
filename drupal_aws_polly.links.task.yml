@@ -1,0 +1,9 @@
+drupal_aws_polly.settings_tab:
+  route_name: drupal_aws_polly.settings
+  title: 'AWS Polly Settings'
+  base_route: drupal_aws_polly.settings
+
+drupal_aws_polly.test_tab:
+  route_name: drupal_aws_polly.test_form
+  title: 'AWS Polly Test'
+  base_route: drupal_aws_polly.settings

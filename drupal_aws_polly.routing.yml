@@ -5,3 +5,11 @@ drupal_aws_polly.settings:
     _title: 'AWS Polly Settings'
   requirements:
     _role: 'administrator'
+
+drupal_aws_polly.test_form:
+  path: '/admin/config/development/aws_polly/test'
+  defaults:
+    _form: '\Drupal\drupal_aws_polly\Form\AwsPollyTestForm'
+    _title: 'AWS Polly test'
+  requirements:
+    _role: 'administrator'
